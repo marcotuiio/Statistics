@@ -119,4 +119,4 @@ n = 350; N = 15000; S = 50; nc = 99
 n0 = amostra_inicial(N, n); n0
 e = erro_quantitativo(nc, S, n0); e
 
-rm(list=ls());
+rm(list=ls())

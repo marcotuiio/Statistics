@@ -188,6 +188,6 @@ z = 1.96;
 # n * N = n0(N - n)
 
 n0 = n * N / (N - n);
-n0 = trunc(n0)-1 # NAO ENTENDI PORQUE -1
+n0 = trunc(n0)-1 
 e = sqrt (z^2 * pi*(1-pi) / n0);
 e = e * 100; e # deixando E em porcentagem
