@@ -43,7 +43,7 @@ n0 = Z^2 * pi*(1-pi) / E^2; n0
 # b) Amostra final, para N = 25486
 N = 25486;
 n0 = 545;
-n = N * n0 / (N + n0); n
+n = N * n0 / (N + n0); ceiling(n)
 
 # c) a amostra mínima final se N = 250.
 N2 = 250;
@@ -59,8 +59,8 @@ n2 = N2 * n0 / (N2 + n0); n2
 S = 400;
 e = 50;
 Z = 1.96;
-n0 = Z^2 * S^2 / e^2; n0
+n0 = Z^2 * S^2 / e^2; ceiling(n0)
 
 # b) Com e=25, qual deve ser o valor de n0?
 e2 = 25;
-n02 = Z^2 * S^2 / e2^2; n02
+n02 = Z^2 * S^2 / e2^2; ceiling(n02)
