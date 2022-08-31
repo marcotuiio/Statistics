@@ -69,4 +69,3 @@ yi = c(8, 14, 20, 26, 32, 38)
 #b) czuber
 czu = czuber(17, 6, (8-5), (8-7)); czu
 pear = pearson(fi, yi); pear
-Md = MD(23, 30, 14, 7, 6); Md
