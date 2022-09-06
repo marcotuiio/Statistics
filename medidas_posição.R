@@ -66,6 +66,6 @@ yi = c(8, 14, 20, 26, 32, 38)
 
 #a) moda bruta = 17|- 23
 
-#b) czuber
+#b) czuber e pearson
 czu = czuber(17, 6, (8-5), (8-7)); czu
 pear = pearson(fi, yi); pear
