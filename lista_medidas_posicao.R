@@ -129,4 +129,4 @@ k = 20  # qntd de classes
 a = AT/k; a  # amplitude das classes
 intervalos = c("35|-60", "60|-85", "85|-110", "110|-135", "135|-160", "...")
 classe5_inf = 135;
-classe5_medio = 135+13; classe5_medio 
+classe5_medio = (135+12 + 135+13) / 2; classe5_medio  # 24 elementos na classe
