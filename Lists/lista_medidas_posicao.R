@@ -148,7 +148,43 @@ boxplot(observacoes)
 # 7) Com base nos dados da Tabela 2, calcule o peso médio dos ratos em cada 
 # idade. Usando o R, construa o gráfico de caixas para a variável peso, 
 # considerando-se cada rato (apenas um gráfico com todos os ratos).
- 
+library(readxl)
+require(readxl)
+dados_ratos = read_excel("C:/Users/marco/OneDrive/Área de Trabalho/AULAS/Estatística/dados_ratos.xlsx");
+with(dados_ratos, boxplot(Peso ~ Idade));
+
+# Peso médio para cada idade:
+pesos = with(dados_ratos, c(Peso)); 
+idades = with(dados_ratos, c(Idade));
+
+i = 1
+aux1 = aux2 = aux3 = aux4 = aux5 = 0
+medias = c(0, 0, 0, 0, 0)
+while(i <= length(idades)) {
+    if (idades[i] == 30) {
+        medias[1] = medias[1] + pesos[i]
+        aux1 = aux1+1
+    } else if (idades[i] == 34) {
+        medias[2] = medias[2] + pesos[i]
+        aux2 = aux2+2
+    } else if (idades[i] == 38) {
+        medias[3] = medias[3] + pesos[i] 
+        aux3 = aux3+1
+    } else if (idades[i] == 42) {
+        medias[4] = medias[4] + pesos[i]   
+        aux4 = aux4+1
+    } else if (idades[i] == 46) {
+        medias[5] = medias[5] + pesos[i]
+        aux5 = aux5+1
+    }
+    
+    i = i+1
+}
+Medias = c(medias[1]/aux1, medias[2]/aux2, medias[3]/aux3, medias[4]/aux4, medias[5]/aux5)
+Medias
+
+media_pesos = sum(pesos)/length(pesos); media_pesos
+
 ###############################################################################
 
 # 8) Trinta pessoas foram consultadas sobre sua cor favorita.
