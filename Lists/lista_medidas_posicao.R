@@ -185,8 +185,6 @@ Medias
 
 media_pesos = sum(pesos)/length(pesos); media_pesos
 
-###############################################################################
-
 # 8) Trinta pessoas foram consultadas sobre sua cor favorita.
 # Construa uma tabela de frequências para os dados. Qual a escolha modal e a 
 # frequência relativa (ou porcentagem) desta cor?
