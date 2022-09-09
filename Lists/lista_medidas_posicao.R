@@ -44,6 +44,15 @@ MEDIANA = function(Li, N, Fac, fmd, a) {
   Md = Li + ((Emd - Fac) / fmd) * a
 }
 
+quartil = function(Li, Fq, Fac, a, i, n) {
+    # i = porcento do quartil desejado    
+    # Li = limite inferior da classe quantilica
+    # a = amplitude das classes
+    # Fac = freq acumulada da classe anterior
+    # Fq = freq da classe quantilica
+    Li + (((i*n - Fac)) * a / Fq); 
+}
+
 # 1) Em uma pesquisa sobre diabetes mellitus, tem-se os seguintes dados de 
 # glicemia em jejum
 
@@ -86,7 +95,10 @@ leitos = sort(l); leitos
 media = MEDIA(leitos); media
 mediana = leitos[25]; mediana
 moda = 64;
-#terceiro quatil = ?
+q3 = quartil(72, 12, 24, 6, 0.75, 50); q3
+## Significa que das 50 instituições analisadas, 75% tem disponibilidade
+## de leitos inferior a 78.75; enquanto 25% dessas possuem disponibulidade
+## superior a 78.75
 
 # b) Construa o gráfico de caixas (box plot).
 boxplot(leitos);
@@ -142,7 +154,7 @@ moda = czuber(0.6, 0.2, 17, 19); moda
 # animais de pequeno porte do Hospital Veterinário da UEL:
 
 observacoes = c(1, 4, 7, 9, 10, 13, 15, 17, 17, 18, 19, 21)
-# quartil = ?
+quantile(observacoes); #q1 = 8.5; q2 = 14; q3 = 17.25
 boxplot(observacoes)
 
 # 7) Com base nos dados da Tabela 2, calcule o peso médio dos ratos em cada 
@@ -182,6 +194,7 @@ while(i <= length(idades)) {
 }
 Medias = c(medias[1]/aux1, medias[2]/aux2, medias[3]/aux3, medias[4]/aux4, medias[5]/aux5)
 Medias
+points(Medias, pch="+", cex=1.5, col="blue")
 
 media_pesos = sum(pesos)/length(pesos); media_pesos
 
@@ -217,6 +230,6 @@ Fi = c(8, 20, 37, 40);
 Frp = c(fr(8, 40), fr(20, 40), fr(37, 40), fr(40, 40))
 data = data.frame(classes, fi, frp, Fi, Frp); data
 
-# quarto_decil = ?
-# primeiro_quartil = ?
-# septuagesimo_sefundo_percentil = ?
+quarto_decil = quartil(9, 12, 8, 5, 0.4, sum(fi)); quarto_decil # 40%
+primeiro_quartil = quartil(9, 12, 8, 5, 0.25, sum(fi)); primeiro_quartil # 25%
+septuagesimo_segundo_percentil = quartil(14, 17, 20, 5, 0.72, sum(fi)); septuagesimo_segundo_percentil # 72%
