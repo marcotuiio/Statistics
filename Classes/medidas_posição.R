@@ -143,9 +143,10 @@ q1 = quartil(50, 30, 4, 10, 0.25, n); q1  # 25% de 79 q1 entre 50 e 60
 q3 = quartil(70, 10, 58, 10, 0.75, n); q3  # 40% de 79 q3
 
 # A distribção é simétrica? Se não, que tipo de assimetria?
+## Sim, quanto mais próximo de 0, mais simetricos são os dados. (ass<0.5)
 assimetria_quartis = function(q1, q3, md) {
     (q3 - 2 * md + q1) / (q3 - q1)
 }
-assimetria_quartis(q1, q3, mediana);
+assimetria_quartis(q1, q3, mediana); 
 
 boxplot(pesos)
