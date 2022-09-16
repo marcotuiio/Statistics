@@ -14,7 +14,7 @@
 # c) Um pesquisador quer avaliar alguns animais e pretende pegar uma amostra 
 # levando em conta as quatro raças que tem acesso, por meio de sorteio dentro 
 # de cada grupo. => Amostragem estratificada
-#d) Um pesquisador quer avaliar alguns animais e pretende pegar uma amostra 
+# d) Um pesquisador quer avaliar alguns animais e pretende pegar uma amostra 
 # levando em conta as quatro raças que tem acesso, SEM realizar um sorteio 
 # dentro de cada grupo. => Amostragem por cotas
 
@@ -29,7 +29,7 @@
 # (d) As técnicas de amostragem estratificadas e por cotas são idênticas => 
 # => Falso, a técnica de cotas não exige que a seleção seja aleatória
 # (e) Amostra é umas parcela da popução obtida por meio de alguma técnica de 
-# amostragem => VErdadeiro
+# amostragem => Verdadeiro
 
 rm(list=ls())
 # 4) A enumeração dos prontuários de animais atendidos pelo Hospital Veterinário 
@@ -43,7 +43,7 @@ rm(list=ls())
 # escolha definido previamente (fraçao f = N/n)
 
 # Intervalo será 12 entre os prontuários (3756/300 = 12.5 = 12)
-set.seed(160)
+set.seed(560105)
 (a<-sample(12,1)) # escolha do ponto inicial
 (amostra<-c(a,(a+12) , (a+12+13), (a+2*12+13),
             (a+2*12+2*13),(a+3*12+2*13), (a+3*12+3*13),
