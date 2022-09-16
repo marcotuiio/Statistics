@@ -1,6 +1,19 @@
-rm(list=ls())
+---
+title: "Estrutura" 
+author: "Marco Tulio Alves de Barros" 
+date: "2022-09-16"  
+output:
+  pdf_document: default
+  html_document: default
+---
 
-### Funções uteis !!
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## FUNÇÕES UTEIS
+
+```{r}
 
 fr = function(fi, N) {
   round((fi / N) * 100, 2);
@@ -53,8 +66,10 @@ quantil = function(Li, Fq, Fac, a, i, n) {
     Li + (((i*n - Fac)) * a / Fq); 
 }
 
-# 1) Em uma pesquisa sobre diabetes mellitus, tem-se os seguintes dados de 
-# glicemia em jejum
+```
+
+## Ex 1:
+```{r}
 
 glicemia = c(80, 85, 86, 90, 95, 96, 99, 100, 101, 103,
              103, 103, 104, 105, 108, 108, 109, 110, 110, 110)
@@ -80,9 +95,10 @@ media_bruta = MEDIA(glicemia); media_bruta
 mediana_bruta = (glicemia[10] + glicemia[11]) / 2; mediana_bruta;
 moda_bruta = 110
 
-# 2) Em um estudo sobre instituições de atendimento médico, foram obtidos dados 
-# da disponibilidade de leitos de 50 dessas instituições:
+```
 
+## Ex 2:
+```{r}
 l = c(48, 53, 58, 62, 64, 66, 69, 71, 77, 81,
            49, 54, 58, 62, 64, 67, 69, 72, 77, 82,
            50, 55, 59, 63, 65, 67, 70, 73, 78, 83,
@@ -118,9 +134,10 @@ dados;
 media = MEDIA(leitos); media
 mediana = MEDIANA(66, length(leitos), 24, 12, a); mediana
 moda = czuber(66, a, 1, 6); moda
+```
 
-# 3) Os dados abaixo representam a largura máxima de amostras de crânios de 
-# animais machos. Calcule média, mediana e a moda. 
+## Ex 3:
+```{r}
 cr = c(131, 119, 138, 125, 129, 126, 131, 132, 126, 128, 128, 131)
 cranios = sort(cr); cranios
 len = length(cranios); len
@@ -128,38 +145,37 @@ len = length(cranios); len
 media = MEDIA(cranios);
 mediana = (cranios[6] + cranios[7]) / 2; mediana
 moda_bruta = 131;
+```
 
-# 4) A amplitude total de um conjunto de números é 500. Se a distribuição de 
-# frequências apresenta 20 classes, qual deverá ser o limite inferior e o ponto 
-# médio da 5ª classe, se o limite superior da 1ª classe é igual a 35?
-
+## Ex 4:
+```{r}
 AT = 500  # AT = MAX(c) - MIN(c)
 k = 20  # qntd de classes 
 a = AT/k; a  # amplitude das classes
 intervalos = c("35|-60", "60|-85", "85|-110", "110|-135", "135|-160", "...")
 classe5_inf = 135;
 classe5_medio = (135+12 + 135+13) / 2; classe5_medio  # 24 elementos na classe
+```
 
-# 5) Com base nos dados apresentados na Tabela 1, calcular a média, mediana e 
-# moda de ácido ascórbico
-
+## Ex 5: 
+```{r}
 fi = c(3, 6, 18, 35, 16, 2)
 xi = c(0.1, 0.3, 0.5, 0.7, 0.9, 1.1)  # ponto medio
 
 media = MEDIA_POND(fi, xi); media
 mediana = MEDIANA(0.6, 80, 27, 35, 0.2); mediana
 moda = czuber(0.6, 0.2, 17, 19); moda
+```
 
-# 6) Consideremos 12 observações (ordenadas) do tempo de observações (dias) de 
-# animais de pequeno porte do Hospital Veterinário da UEL:
-
+## Ex 6:
+```{r}
 observacoes = c(1, 4, 7, 9, 10, 13, 15, 17, 17, 18, 19, 21)
 quantile(observacoes); #q1 = 8.5; q2 = 14; q3 = 17.25
 boxplot(observacoes)
+```
 
-# 7) Com base nos dados da Tabela 2, calcule o peso médio dos ratos em cada 
-# idade. Usando o R, construa o gráfico de caixas para a variável peso, 
-# considerando-se cada rato (apenas um gráfico com todos os ratos).
+## Ex 7:
+```{r}
 library(readxl)
 require(readxl)
 dados_ratos = read_excel("C:/Users/marco/OneDrive/Área de Trabalho/AULAS/Estatística/dados_ratos.xlsx");
@@ -197,19 +213,20 @@ Medias
 points(Medias, pch="+", cex=1.5, col="blue")
 
 media_pesos = sum(pesos)/length(pesos); media_pesos
+```
 
-# 8) Trinta pessoas foram consultadas sobre sua cor favorita.
-# Construa uma tabela de frequências para os dados. Qual a escolha modal e a 
-# frequência relativa (ou porcentagem) desta cor?
-
+## Ex 8:
+```{r}
 cores = c("vermelho", "azul", "verde", "amarelo", "preto", "marrom", "laranja", "roxo", "totais")
 fi = c(4, 11, 4, 3, 5, 1, 1, 1, 30);
 frp = c(fr(4, 30), fr(11, 30), fr(4, 30), fr(3, 30), fr(5, 30), fr(1, 30), fr(1, 30), fr(1, 30), 100)
 data = data.frame(cores, fi, frp); data
 # escolha_modal = azul, com 11 ocorrências
 azul_fr = frp[2]; azul_fr
+```
 
-# 9) Calcule para a tabela de frequências abaixo sua respectiva média e mediana.
+## Ex 9:
+```{r}
 xi = c(2, 3, 4, 5, 6);    # peso das frequencias 
 fi = c(3, 6, 10, 6, 3);   
 frp = c(fr(3, 28), fr(6, 28), fr(10, 28), fr(6, 28), fr(3, 28))
@@ -220,9 +237,10 @@ data = data.frame(xi, fi, frp, Fi, Frp); data
 media_pond = MEDIA_POND(fi, xi); media_pond
 # mediana_bruta = 5;
 mediana = MEDIANA(4, sum(fi), 9, 10, 1); mediana
+```
 
-# 10) Determinar o quarto decil, o primeiro quartil e o septuagésimo segundo 
-# percentil da seguinte distribuição
+## Ex 10: 
+```{r}
 classes = c("4|-9", "9|-14", "14|-19", "19|-24");
 fi = c(8, 12, 17, 3)
 frp = c(fr(8, 40), fr(12, 40), fr(17, 30), fr(3, 40))
@@ -233,3 +251,5 @@ data = data.frame(classes, fi, frp, Fi, Frp); data
 quarto_decil = quantil(9, 12, 8, 5, 0.4, sum(fi)); quarto_decil # 40%
 primeiro_quartil = quantil(9, 12, 8, 5, 0.25, sum(fi)); primeiro_quartil # 25%
 septuagesimo_segundo_percentil = quantil(14, 17, 20, 5, 0.72, sum(fi)); septuagesimo_segundo_percentil # 72%
+```
+
