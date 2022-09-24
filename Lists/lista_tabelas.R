@@ -14,13 +14,13 @@ fr = function(fi, N) {
 }
 
 RACAS = c("Negativ", "% Neg.", "Positiv", "% Pos.", "Totais");
-SRD = c(26, fr(26, 300), 34, fr(34, 300), 60);
-PERSAS = c(30, fr(30, 300), 50, fr(50, 300), 80);
-OUTROS = c(75, fr(75, 300), 85, fr(85, 300), 160);
+SRD = c(26, fr(26, 60), 34, fr(34, 60), 60);
+PERSAS = c(30, fr(30, 80), 50, fr(50, 80), 80);
+OUTROS = c(75, fr(75, 160), 85, fr(85, 160), 160);
 
-perc_neg = SRD[2]+PERSAS[2]+OUTROS[2];
-perc_pos = SRD[4]+PERSAS[4]+OUTROS[4];
-TOTAIS = c(26+30+75, perc_neg, 34+50+85, perc_pos, 60+80+160);
+#perc_neg = SRD[2]+PERSAS[2]+OUTROS[2];
+#perc_pos = SRD[4]+PERSAS[4]+OUTROS[4];
+TOTAIS = c(26+30+75, "-", 34+50+85, "-", 60+80+160);
 
 t_dupla_entrada = rbind(RACAS, SRD, PERSAS, OUTROS, TOTAIS); t_dupla_entrada
 
@@ -44,14 +44,14 @@ rm(list=ls())
 # A) Tabela de dupla entrada
 
 PORTE = c("ALTA", "% Alta", "BAIXA", "% Baixa", "MODERADA", "% Mod", "TOTAIS")
-PEQUENO = c(10, fr(10, 150), 22, fr(22, 150), 18, fr(18, 150), 50);
-MEDIO = c(47-25, fr(22, 150), 80-62, fr(18, 150), 40, fr(40, 150), 80);
-GRANDE = c(15, fr(15, 150), 40-40, fr(0, 150), 5, fr(5, 150), 150-130);
+PEQUENO = c(10, fr(10, 50), 22, fr(22, 50), 18, fr(18, 50), 50);
+MEDIO = c(47-25, fr(22, 80), 80-62, fr(18, 80), 40, fr(40, 80), 80);
+GRANDE = c(15, fr(15, 20), 40-40, fr(0, 20), 5, fr(5, 20), 150-130);
 
-a = PEQUENO[2]+MEDIO[2]+GRANDE[2]
-b = PEQUENO[4]+MEDIO[4]+GRANDE[4]
-c = PEQUENO[6]+MEDIO[6]+GRANDE[6]
-TOTAIS = c(47, a, 40, b, 18+40+5, c, 150);
+#a = PEQUENO[2]+MEDIO[2]+GRANDE[2]
+#b = PEQUENO[4]+MEDIO[4]+GRANDE[4]
+#c = PEQUENO[6]+MEDIO[6]+GRANDE[6]
+TOTAIS = c(47, "-", 40, "-", 18+40+5, "-", 150);
 
 t_de = rbind(PORTE,PEQUENO, MEDIO, GRANDE, TOTAIS); t_de
 

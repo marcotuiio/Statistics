@@ -1,0 +1,176 @@
+---
+title: "Relatório - Avaliação Prática 1"
+author: "Marco Tulio Alves de Barros"
+date: "2022-09-23"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Ex 1: Diferentes levantamentos de dados foram realizados sem a definição prévia do erro amostral, porém é necessária essa informação para a divulgação adequada. Encontre qual o erro para cada uma das situações abaixo.
+
+Funções úteis para calcular erro:
+```{r}
+erro_quali = function(n0, pi, z) {
+    # z = 1.96 para confiança de 95% ou 2.58 para confiança de 99%
+    # pi = incidência
+    # n0 = população amostral
+    e = sqrt(z^2 * pi*(1-pi) / n0);
+    round(e * 100, 2);
+}
+
+erro_quanti = function(n0, s, z) {
+    # z = 1.96 para confiança de 95% ou 2.58 para confiança de 99%
+    # s = desvio padrão
+    # n0 = população amostral
+    e = sqrt(z^2 * s^2 / n0);
+    round(e * 100, 2);
+}
+
+n0_isolado = function(N, n) {
+    # Correção de n0 dada uma população N e tamanho amostral final n
+    n0 = (n * N) / (N - n);
+    trunc(n0)-1;
+}
+```
+
+
+## Item a) n = 850, pi = 0.45, nc = 95%.
+```{r}
+a = erro_quali(850, 0.45, 1.96); a
+```
+
+## Item b) n = 700, N = 40000, nc = 99%.
+```{r}
+n0 = n0_isolado(40000, 700);
+# Como não foi passado pi, por padrão adota-se pi=0.5 e erro qualitativo
+b = erro_quali(n0, 0.5, 2.58); b
+```
+
+## Item c) n = 1000, N = 20000, S = 18, nc = 95%.
+```{r}
+n0 = n0_isolado(20000, 1000);
+c = erro_quanti(n0, 18, 1.96); c
+# Erro superior a 100%, portanto algo está errado. Erros absurdos !!!
+```
+
+## Item d) n = 380, N = 5000, S = 45, nc = 99%.
+```{r}
+n0 = n0_isolado(5000, 380);
+d = erro_quanti(n0, 45, 2.58); d
+# Erro superior a 100%, portanto algo está errado. Erros absurdos !!!
+```
+
+# Ex 2: Um estudo foi realizado para avaliar os gastos médios de compras realizadas em uma rede e os resultados são apresentados em prova1.xlsx. Com base nesse conjunto retire uma amostra de tamanho 30 com base nos últimos seis números de sua matricula e responda as seguintes questões.
+
+```{r}
+require(readxl)
+dados_brutos = read_excel("C:/Users/marco/OneDrive/Área de Trabalho/AULAS/Estatística/prova1.xlsx");
+set.seed(560105);
+amostra = sample(dados_brutos$Gasto, 30); amostra
+```
+
+## Item a) Encontre a média, desvio padrão e variância.
+```{r}
+media = mean(amostra); 
+mediana = median(amostra); 
+desvio = sd(amostra);  
+variancia = var(amostra); 
+rbind(media, mediana, desvio, variancia);
+```
+
+## Item b) Qual o coeficiente de variação? Comente sobre ele.
+```{r}
+CV = round(desvio / media * 100, 2); CV
+```
+
+Dado um coeficiente de variação de 18.37%, podemos concluir que a amostra possui uma *média dispersão* (15% < CV < 30%), e portanto temos que o grupo selecionado é relativamente homogêneo, próximo do limite de baixa dispersão. Possivelemente apresenta poucos valores bem distantes, mas a maioria se mantêm numa determinada faixa semelhante.
+
+## Item c) Construa o Box-plot e comente
+```{r}
+boxplot(amostra);
+points(media, pch="+", cex=1.5, col="blue")
+```
+
+Analisando o box-plot podemos dizer que o primeiro quartil se encontra na faixa de gasto de 180, o segundo quartil (ou mediana) na faixa dos 200 e o terceiro quartil na faixa dos 240. Pode-se afirmar que a amostra se confirma relativamente simétrica, sem presença de elementos extremamente destoantes. Observa-se também que as maioria dos elementos se encontra na porção superior, visto que a caixa se encontra levemente deslocada para cima. A média e a mediana estarem tão próximas, cruz e linha central juntas, também é um bom indicativo da simetria no grupo.
+
+## Item d) Construa o histograma.
+```{r}
+hist(amostra, main = "Histograma Gastos 560105", xlab = "Gastos", ylab = "nº de Clientes")
+```
+
+## Item e) Deseja-se realizar algumas promoções para alguns grupos de cliente levando-se em consideração os gastos. Indique quais as promoções serão feitas para cada tipo de cliente com base nas seguintes condições:
+```{r}
+sorted = sort(amostra); sorted
+```
+ np = len * percentil => i (inteira) f (fracionária)
+ 
+### A promoção A será feita para os 20% clientes que menos gastam.
+```{r}
+np = length(sorted) * 0.2; np # 6.0
+# Como i = 6 e f = 0, devemos fazer a soma da posição i com i+1 e dividir por 2
+# (nesse caso i=6, logo s[6] e s[7])
+yp = (sorted[6] + sorted[7]) / 2; yp
+```
+Portanto, a promoção A deve se concentrar nos produtos que os clientes gastando abaixo da faixa dos 173.43 costumam consumir
+
+### A promoção B será feita entre os 20% e 55% dos clientes que menos gastam.
+```{r}
+np = length(sorted) * 0.55; np # 16.5
+# Como f > 0, devemos pegar o valor na posição i+1 (nesse caso i=16, logo s[17])
+yp = sorted[17]; yp
+```
+Assim, a promoção B deve focar nos produtos que os clientes gastando entre 173.43 e 215.16 consomem
+
+### A promoção C será feita entre os 55% e 93% dos clientes que menos gastam.
+```{r}
+np = length(sorted) * 0.93; np # 27.9
+# Como f > 0, devemos pegar o valor na posição i+1 (nesse caso i=27, logo s[28])
+yp = sorted[28]; yp 
+```
+Desse modo, a promoção C deve abrangir os produtos visados pelos clientes com gastos entre 215.16 e 259.72;
+
+### A promoção D será feita para os 7% clientes que mais gastam.
+```{r}
+np = length(sorted) * 0.93; np # 27.9
+# Como f > 0, devemos pegar o valor na posição i+1 (nesse caso i=27, logo s[28])
+yp = sorted[28]; yp
+```
+E por fim, a promoção D há de concentrar-se em atrair clientes gastando acima de 259.72, pois estes são os 7% que mais gastam
+
+## Item f) Construa a tabela de frequências
+```{r}
+k = round(sqrt(length(sorted))); k  # Quantidade de classes
+amp = (max(sorted) - min(sorted)) / k; amp  # Intervalo das classes
+intervalos = c(min(sorted), min(sorted)+amp, min(sorted)+2*amp, min(sorted)+3*amp, min(sorted)+4*amp, min(sorted)+5*amp); intervalos  # Definindo vetor de intervalos
+tabela = hist(sorted, plot=F, breaks=intervalos, right=F);
+
+GASTOS = c("132.650|-159.026", "159.026|-185.402", "185.402|-211.778", "211.778|-238.154", "238.154|-264.530"); # Fazendo o nome das colunas a partir dos intervalos para exibir
+fi = round(tabela$count); # Definindo a frequência absoluta simples
+frp = round(fi/sum(fi)*100, 2); # Definindo a frequência relativa simples
+Fi = cumsum(fi); # Definindo a frequência absoluta acumulada
+Frp = cumsum(frp); # Definindo a frequência relativa acumulda
+
+tabela_freq = data.frame(GASTOS, fi, frp, Fi, Frp); tabela_freq
+```
+
+## Item g) Compare os dados da amostra com os não selecionados quanto as suas médias e variabilidade. Em seguida escolha um dos dois grupos para serem os clientes especiais. Justifique sua escolha.
+```{r}
+
+```
+
+## Item h) Assumindo que esse estudo pode ser considerado como um estudo piloto, utilize as informações obtidas para calcular qual o tamanho amostral levando-se em considerção um erro amostral de +- R$3.50, um nível de confiança de 95% em uma população de 45000 consumidores.
+```{r}
+N = 45000; # população total de consumidores
+e = 3.5;  # Erro
+z = 1.96; # Valor para nível de confiança de 95%
+
+## Variável quantitativa, e ja temos o desvio padrão, portanto calcula-se n0 por:
+n0 = z^2 * sd(sorted)^2 / e^2; n0
+
+# Corrigindo para o tamanho da população
+n = trunc(N * n0 / (N + n0)) + 1; n
+```
+Portanto 459 é o tamanho amostral desse estudo piloto 
