@@ -26,7 +26,7 @@ erro_quanti = function(n0, s, z) {
     # s = desvio padrão
     # n0 = população amostral
     e = sqrt(z^2 * s^2 / n0);
-    round(e * 100, 2);
+    round(e, 2);
 }
 
 n0_isolado = function(N, n) {
@@ -53,15 +53,15 @@ b = erro_quali(n0, 0.5, 2.58); b
 ```{r}
 n0 = n0_isolado(20000, 1000);
 c = erro_quanti(n0, 18, 1.96); c
-# Erro superior a 100%, portanto algo está errado. Erros absurdos !!!
 ```
 
 ## Item d) n = 380, N = 5000, S = 45, nc = 99%.
 ```{r}
 n0 = n0_isolado(5000, 380);
 d = erro_quanti(n0, 45, 2.58); d
-# Erro superior a 100%, portanto algo está errado. Erros absurdos !!!
 ```
+
+OBS: Nos itens A e B o erro em variáveis qualitativas é dado em porcentagem (%). Enquanto nos itens C e D, por se tratar de um erro para variáveis quantitativas, o valor obtido deve ter alguma unidade de medida (ex: reais, kgs)
 
 # Ex 2: Um estudo foi realizado para avaliar os gastos médios de compras realizadas em uma rede e os resultados são apresentados em prova1.xlsx. Com base nesse conjunto retire uma amostra de tamanho 30 com base nos últimos seis números de sua matricula e responda as seguintes questões.
 
@@ -165,7 +165,8 @@ tabela_freq = data.frame(GASTOS, fi, frp, Fi, Frp); tabela_freq
 require(vecsets)
 resto = vecsets::vsetdiff(dados_brutos$Gasto, amostra); resto
 # Função do pacote vecsets que vai ler o dados brutos e remover dela os 
-# elementos presentes na amostra, deixando assim um vetor resto com os 20 elementos não selecionados.
+# elementos presentes na amostra, deixando assim um vetor resto com os 20 elementos 
+# não selecionados.
 
 media_resto = mean(resto); # Média do resto 
 desvio_resto = sd(resto); # Desvio padrão do resto 
@@ -187,7 +188,7 @@ N = 45000; # população total de consumidores
 e = 3.5;  # Erro
 z = 1.96; # Valor para nível de confiança de 95%
 
-## Variável quantitativa, e ja temos o desvio padrão, portanto calcula-se n0 por:
+## Variável quantitativa, e já temos o desvio padrão, portanto calcula-se n0 por:
 n0 = z^2 * sd(sorted)^2 / e^2; n0
 
 # Corrigindo para o tamanho da população
