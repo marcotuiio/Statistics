@@ -86,7 +86,7 @@ rbind(media, mediana, desvio, variancia);
 CV = round(desvio / media * 100, 2); CV
 ```
 
-Dado um coeficiente de variação de 18.37%, podemos concluir que a amostra possui uma *média dispersão* (15% < CV < 30%), e portanto temos que o grupo selecionado é relativamente homogêneo, próximo do limite de baixa dispersão. Possivelemente apresenta poucos valores bem distantes, mas a maioria se mantêm numa determinada faixa semelhante.
+Dado um coeficiente de variação de 18.37%, podemos concluir que a amostra possui uma *média dispersão* (15% < CV < 30%), e portanto temos que o grupo selecionado é relativamente homogêneo, próximo do limite de baixa dispersão. Possivelemente apresenta poucos valores extremos, sendo que a maioria se mantêm numa determinada faixa semelhante.
 
 ## Item c) Construa o Box-plot e comente
 ```{r}
@@ -94,7 +94,7 @@ boxplot(amostra);
 points(media, pch="+", cex=1.5, col="blue")
 ```
 
-Analisando o box-plot podemos dizer que o primeiro quartil se encontra na faixa de gasto de 180, o segundo quartil (ou mediana) na faixa dos 200 e o terceiro quartil na faixa dos 240. Pode-se afirmar que a amostra se confirma relativamente simétrica, sem presença de elementos extremamente destoantes. Observa-se também que as maioria dos elementos se encontra na porção superior, visto que a caixa se encontra levemente deslocada para cima. A média e a mediana estarem tão próximas, cruz e linha central juntas, também é um bom indicativo da simetria no grupo.
+Analisando o box-plot podemos dizer que o primeiro quartil se encontra na faixa de gasto de 180, o segundo quartil (ou mediana) na faixa dos 210 e o terceiro quartil na faixa dos 240. Pode-se afirmar que a amostra se confirma relativamente simétrica, sem presença de elementos extremamente destoantes. Observa-se também que as maioria dos elementos se encontra na porção superior, visto que a caixa se encontra levemente deslocada para cima em relação ao eixo Y. A média e a mediana estarem tão próximas, cruz e linha central juntas, também é um bom indicativo da simetria no grupo.
 
 ## Item d) Construa o histograma.
 ```{r}
@@ -122,7 +122,7 @@ np = length(sorted) * 0.55; np # 16.5
 # Como f > 0, devemos pegar o valor na posição i+1 (nesse caso i=16, logo s[17])
 yp = sorted[17]; yp
 ```
-Assim, a promoção B deve focar nos produtos que os clientes gastando entre 173.43 e 215.16 consomem
+Assim, a promoção B deve focar nos produtos que os clientes gastando entre 173.43 e 215.76 consomem
 
 ### A promoção C será feita entre os 55% e 93% dos clientes que menos gastam.
 ```{r}
@@ -130,7 +130,7 @@ np = length(sorted) * 0.93; np # 27.9
 # Como f > 0, devemos pegar o valor na posição i+1 (nesse caso i=27, logo s[28])
 yp = sorted[28]; yp 
 ```
-Desse modo, a promoção C deve abrangir os produtos visados pelos clientes com gastos entre 215.16 e 259.72;
+Desse modo, a promoção C deve abrangir os produtos visados pelos clientes com gastos entre 215.76 e 259.72;
 
 ### A promoção D será feita para os 7% clientes que mais gastam.
 ```{r}
@@ -144,10 +144,14 @@ E por fim, a promoção D há de concentrar-se em atrair clientes gastando acima
 ```{r}
 k = round(sqrt(length(sorted))); k  # Quantidade de classes
 amp = (max(sorted) - min(sorted)) / k; amp  # Intervalo das classes
-intervalos = c(min(sorted), min(sorted)+amp, min(sorted)+2*amp, min(sorted)+3*amp, min(sorted)+4*amp, min(sorted)+5*amp); intervalos  # Definindo vetor de intervalos
+intervalos = c(min(sorted), min(sorted)+amp, min(sorted)+2*amp, 
+               min(sorted)+3*amp, min(sorted)+4*amp, min(sorted)+5*amp); intervalos  
+# Definindo vetor de intervalos
 tabela = hist(sorted, plot=F, breaks=intervalos, right=F);
 
-GASTOS = c("132.650|-159.026", "159.026|-185.402", "185.402|-211.778", "211.778|-238.154", "238.154|-264.530"); # Fazendo o nome das colunas a partir dos intervalos para exibir
+GASTOS = c("132.650|-159.026", "159.026|-185.402", "185.402|-211.778", 
+           "211.778|-238.154", "238.154|-264.530"); 
+       # Fazendo o nome das colunas a partir dos intervalos 
 fi = round(tabela$count); # Definindo a frequência absoluta simples
 frp = round(fi/sum(fi)*100, 2); # Definindo a frequência relativa simples
 Fi = cumsum(fi); # Definindo a frequência absoluta acumulada
@@ -158,8 +162,24 @@ tabela_freq = data.frame(GASTOS, fi, frp, Fi, Frp); tabela_freq
 
 ## Item g) Compare os dados da amostra com os não selecionados quanto as suas médias e variabilidade. Em seguida escolha um dos dois grupos para serem os clientes especiais. Justifique sua escolha.
 ```{r}
+require(vecsets)
+resto = vecsets::vsetdiff(dados_brutos$Gasto, amostra); resto
+# Função do pacote vecsets que vai ler o dados brutos e remover dela os 
+# elementos presentes na amostra, deixando assim um vetor resto com os 20 elementos não selecionados.
+
+media_resto = mean(resto); # Média do resto 
+desvio_resto = sd(resto); # Desvio padrão do resto 
+variancia_resto = var(resto); # Variância do resto
+
+# Montando colunas da tabela para facilitar comparação dos dados
+Medidas = c("Média", "Desvio", "Variância");
+Amostra = c(media, desvio, variancia);
+Resto = c(media_resto, desvio_resto, variancia_resto);
+
+comp = data.frame(Medidas, Amostra, Resto); comp
 
 ```
+CONCLUSÃO: Visto que a variância e o desvio padrão do conjunto não selecionado na amostra são ligeiramente menores (+-120 na variancia e +-2 no desvio), provavelmente escolheria o grupo de 20 elementos que não estão na amostra principal para serem clientes especias. Apesar do resto apresentar uma média de gastos um pouco inferior (+-3 unidades), uma variância e desvio menores são indicativos de um grupo mais homogêneo e menos disperso. Assim, acredito que seja que melhor trabalhar com um grupo mais homogêneo.
 
 ## Item h) Assumindo que esse estudo pode ser considerado como um estudo piloto, utilize as informações obtidas para calcular qual o tamanho amostral levando-se em considerção um erro amostral de +- R$3.50, um nível de confiança de 95% em uma população de 45000 consumidores.
 ```{r}
