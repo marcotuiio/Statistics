@@ -37,11 +37,11 @@
     # V (Y) = np(1 − p)
     # Função de probabilidade P(Y = y) =(Combinação N y a y) * p^y * (1 − p)^n−y
 
-combinatoria = function(n, p) {  # Combinação N p a p
-  factorial(n) / (factorial(p) * factorial(n - p))
+combinatoria = function(n, y) {  # Combinação N p a p
+  factorial(n) / (factorial(y) * factorial(n - y))
 }
 
-### Exemplo: Uma fazenda sabe que 5% das informa ̧c ̃oes sobre seus animais tem algum
+### Exemplo: Uma fazenda sabe que 5% das informaçoes sobre seus animais tem algum
 ### problema na coleta. Se ela selecionar seis animais ao acaso, determine a
 ### probabilidade de:
 
