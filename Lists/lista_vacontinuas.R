@@ -33,7 +33,7 @@ c(qnorm(0.01, 36.8, 0.15),
 qnorm(0.99, 36.8, 0.15))
 # 36.45 < Y < 37.15
 
-# 6) 1 desvio, carcaça pior 60, carcaaça melhor 80
+# 6) 1 desvio, carcaça pior 60, carcaça melhor 80
 media = 50
 desvio = 2
 # peso medio esperado por carcaça deve estar entre 60 e 80 !

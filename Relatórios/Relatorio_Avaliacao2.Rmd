@@ -1,0 +1,66 @@
+---
+title: "Relatório - Avaliação Prática 2"
+author: "Marco Túlio Alves de Barros"
+date: "2022-11-13"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Ex 1: Um sistema foi programado para separar automaticamente determinados produtos em três grupos. Cada um desses grupos será vendido por diferentes valores. Sabe-se que os produtos tem distribuição normal com média mi =250cm e desvio sigma = 30cm. Em um grupo ficam os 10% menores produtos, em outro ficam os 5% mais pesados, e o outro grupo ficam os produtos intermediários. Se um produto estiver no grupos dos menores será vendido por 60 reais, se estiver no grupos dos maiores será vendido por 150 reais e, caso contrário, por 85 reais. Qual o preço médio de venda dos produtos?
+
+## Precisariamos primeiro calcular os valores que compreendem cada grupo, depois a probabilidade de ocorrer esse grupo e multiplicar pelo preço referente a tal, dessa forma, a média esperada deve estar entre 60 e 150 reais, porém já é fornecida a probabilidade de cada grupo ocorrer, logo basta multiplicar essa probabilidade pelo preço referente
+
+```{r}
+media = 250;
+desvio = 30;
+n10 = qnorm(0.1, media, desvio);  # menores que isso são os 10% menores
+n95 = qnorm(0.95, media, desvio);  # maiores que isso são os 10% maiores
+
+p1 = pnorm(n10, media, desvio);  # probabilidade de ser dos 10% menores
+p2 = pnorm(n95, media, desvio) - pnorm(n10, media, desvio)  # probabilidade de estar no preço de 85
+p3 = pnorm(n95, media, desvio, lower.tail = F);  # probabilidade de ser dos 5% maiores
+
+p1 * 60 + p2 * 85 + p3 * 150
+0.1 * 60 + 0.85 * 85 + 0.05 * 150
+```
+
+# Ex 2: Um estudo foi realizado para verificar o peso de animais. Nesse estudo pode-se verificar que os pesos apresentaram uma distribuição normal com média mi = 385 kg e desvio padrão sigma = 36 kg. Sabendo dessas informações:
+
+## Item a) Qual a probabilidade de um animal ter peso acima de 390 kg;
+```{r}
+pnorm(390, 385, 36, lower.tail = F);  # equivalente a fazer 1 - (z > (390-385)/36) 
+```
+### Como a distribuição normal é acumulativa, usamos a opção de lower-tail para acessar os valores superiores ao desejado.
+
+## Item b) Calcular a proporção esperada de animais com pesos abaixo de 370 kg;
+```{r}
+pnorm(370, 385, 36);  # probababilidade do animal ter peso inferior a 370kg
+```
+### Para calcular a proporção esperada basta multiplicar a probabilidade de 0.3384611 obtida pela quantidade de animais no grupo.
+
+## Item c) Qual a probabilidade animais com pesos acima de 385 kg;
+```{r}
+pnorm(385, 385, 36, lower.tail = F);  # Conta apenas para provar
+```
+### Sabendo que a distribuição normal apresenta simetria e é acumulativa, a probabilidade de que elementos estejam acima da média é de 0.5, lembrando que o gráfico da normal tem formato de sino sendo a média centralizada. 
+
+## Item d) Calcular a proporção esperada de animais com pesos entre 385 e 390 kg;
+```{r}
+pnorm(390, 385, 36) - pnorm(385, 385, 36);  # probabilidade do intervalo
+```
+### Calculando a probabilidade do intervalo retirando a parte acumulada. Assim, para calcular a proporção desejada, bastaria multiplicar essa probabilidade do intevalo pelo número de animais no conjunto, calculando a esperança.
+
+## Item e) Se 25% dos animais com menor peso forem abatidos, qual o peso mínimo dos animais remanescentes?
+```{r}
+qnorm(0.25, 385, 36);  # Calculando o peso do quantil de .25
+```
+### Dessa forma, abatendo 25% dos animais com menor peso, estaremos removendo todos os animais com peso inferior a 360.72 kg e consequentemente, esse é o peso mínimo dos remanescentes.
+
+## Item f) Qual o peso mínimo para um animal estar entre os 5% com maior peso?
+```{r}
+qnorm(0.95, 385, 36)  # Calculando o peso do quantil de .95 
+```
+### Por ser acumulativa, se queremos os 5% mais pesados devemos calcular o peso do quantil de 0.95. E assim, conclui-se que o peso mínimo dos 5% mais pesados é de 444.21 kg

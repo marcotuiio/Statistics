@@ -61,7 +61,7 @@ bioN_esp/bioN
 # c) nao ser da biologia;
 1 - (bioD+bioN) / N
 # d) ser esportista ou aluno da biologia;
-(esportista/N) + (bioD+bioN)/N
+(esportista/N) + (bioD+bioN)/N - (bioD_esp+bioN_esp)/N
 # e) nao ser esportista nem aluno da biologia.
 1 - (esportista/N) - (bioD+bioN)/N
 
