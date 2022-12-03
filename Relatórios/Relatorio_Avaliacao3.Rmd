@@ -1,0 +1,121 @@
+---
+title: "Relatório - Avaliação Prática 3"
+author: "Marco Túlio Alves de Barros"
+date: "2022-12-03"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Ex 1: Um estudo foi realizado para verificar uma possível diferença entre as intenções de compra entre dois grupos distintos. Ao final do estudo foi observado que no G1, dos 150 entrevistados, cerca de 45% tinham intenção de comprar; do G2, dos 230 entrevistados, cerca de 50% tinham intenção de compra. Com base nos resultados a seguir diga se existe diferença entre os grupos ao nível de 5%, defina e hipótese e conclua.
+
+## Definindo a Hipótese Nula (H0) como os dois grupos sendo iguais e a H1 representando a diferença entre os grupos podemos realizar o teste de proporção.
+
+```{r}
+nG1 = 0.45 * 150 # defindo a proporção correta do grupo 1
+nG2 = 0.5 * 230 # defindo a proporção correta do grupo 2
+intencao = c(nG1, nG2) 
+grupos = c(150, 230)
+prop.test(intencao, grupos, correct=F)
+```
+
+## Conclusão: Tendo em vista que o p-valor obtido foi de 0.3404, valor maior que a referência de 0.05, H0 NÃO deve ser rejeitada e portanto não temos evidências o suficiente para afirmar que existe diferença entre os grupos. Outro elemento que indica a não diferença dos grupos é a presença do 0 no intervalo de confinça obtido.
+
+# Ex 2: Um estudo foi realizado para verificar um determinado treinamento foi eficaz para isso foram feitas avaliações antes e depois de cada pessoa. Os resultados são apresentados no conjunto de dados treinamento.xlsx. Pode-se dizer ao nível de 5% de significância que o treinamento foi eficiente. Para resolver o exercício retire uma amostra de tamanho 15 utilizando o número de matrícula como semente.
+
+```{r}
+require(readxl)
+dados_brutos = read_excel("C:/Users/marco/OneDrive/Área de Trabalho/UEL/Statistics/Relatórios/DADOS/treinamento.xlsx");
+set.seed(560105);  
+antes = sample(dados_brutos$antes, 15); 
+depois = c(149.72, 252.64, 201.1, 223.95, 196.39, 241.17, 307.3, 255.75, 288.61, 254.66, 227.89, 144.54, 188.03, 281.59, 244.59)
+data.frame(as.double(antes), depois)
+## Como são duas colunas correlacionadas, retira-se primeiro a amostra dos valores
+## 'antes' e em seguida completo a coluna 'depois' com os valores adequados
+## referentes a cada valor de 'antes'
+
+## realizando teste de normalidade para garantir o teste de hipótese
+shapiro.test(diff(as.double(antes) - depois)) 
+```
+## No teste de normalidade de Shapiro p-valor foi maior que 0.05 e portanto H0 não será rejeitada e podemos afirmar que existe uma distribuição normal nos dados
+
+```{r}
+## realizando teste de hipótese para valor pareados 
+t.test(depois, as.double(antes), alternative='two.side', mu=0, paired=T)
+```
+
+## Nesse caso, H0 é afirmar que não o treinamento não surtiu efeito positivo no grupo. Dado um p-valor de 0.1701, chegamos aa conclusão de que  a hipótese nula não deve ser rejeitada e portanto o treinamento não foi eficiente.
+
+# Ex 3: Um levantamento de dados foi realizado para verificar se o gasto médio com compras e um site era de 500 reais. Com base nos resultados do conjunto de dados gastos.xlsx faça o intervalo de confiança e em seguida verifique se os gastos são de 500 reais. Para resolver o exercício retire uma amostra de tamanho 20 utilizando o núumero de matrícula como semente.
+
+```{r}
+gastos_brutos = read_excel("C:/Users/marco/OneDrive/Área de Trabalho/UEL/Statistics/Relatórios/DADOS/gastos.xlsx")
+set.seed(560105)
+
+amostra_gastos = as.double(sample(gastos_brutos$gastos, 20)); amostra_gastos
+## garantindo distribuição normal dos dados
+shapiro.test(amostra_gastos) 
+t.test(amostra_gastos, mu=500)
+```
+
+## Visto que o intervalo de confiança obtido na amostra foi de 487.5363 - 557.3927 e com uma média de 522.4645. Conclui-se, analisando o p-valor de 0.1941, para a hipótese nula em que a média de gastos seria de 500 reais não deve ser recusada. Tal decisão pode ser baseada pela presença do valor 500 na região crítica e pelo p-valor superior a 0.05
+
+# Ex 4: Com o interesse em verificar se dois grupos são similares entre si em relação ao tempo para executar uma tarefa foi realizado um levantamento de dados. Com base nos resultados do conjunto de dados tempo.xlsx verifique se existe diferença entre as variâncias e em seguida verifique se existe diferença entre os grupos. Para resolver o exercício retire uma amostra de tamanho 20 para o grupo 1 e uma amostra de tamanho 30 para grupo 2, utilizando o número de matrícula como semente.
+
+```{r}
+tempo = read_excel("C:/Users/marco/OneDrive/Área de Trabalho/UEL/Statistics/Relatórios/DADOS/tempo.xlsx")
+set.seed(560105)
+
+grupo1 = as.double(sample(tempo$Grupo1, 20)) 
+grupo2 = as.double(sample(tempo$Grupo2, 30)) 
+
+## realizando testes de shapiro para garantir distribuição normal nos dados
+shapiro.test(grupo1)
+shapiro.test(grupo2)
+
+#var1 = var(grupo1); var1
+#var2 = var(grupo2); var2
+#f = var2 / var1; f 
+#var.test(grupo1, grupo2)
+#t.test(grupo1, grupo2, var.equal=T)
+```
+
+## Apesar dos testes de variância, pelo teste de normalidade de Shapiro obtemos p-valor inferior a 0.05 para os dados do grupo 1 e portanto não faz sentido realizar testes de hipótese para dados que não seguem uma distribuição normal.
+
+# Ex 5: Com o interesse em verificar se dois grupos são similares entre si em relação ao gasto médio com compras foi realizado um levantamento de dados. Com base nos resultados do conjunto de dados compras2.xlsx verifique se
+existe diferença entre as variâncias e em seguida verifique se existe diferença entre os grupos. Para resolver o
+exercício retire uma amostra de tamanho 15 para o grupo 1 e uma amostra de tamanho 15 para grupo 2, utilizando
+o número de matrícula como semente.
+
+```{r}
+gastos_brutos2 = read_excel("C:/Users/marco/OneDrive/Área de Trabalho/UEL/Statistics/Relatórios/DADOS/gastos2.xlsx")
+set.seed(560105)
+
+gastos_g1 = as.double(sample(gastos_brutos2$Grupo1, 15))
+gastos_g2 = as.double(sample(gastos_brutos2$Grupo2, 15))
+
+## realizando testes de shapiro para garantir distribuição normal nos dados
+shapiro.test(gastos_g1)  ## p-valor do grupo1 está muito no limite da distrib. normal
+shapiro.test(gastos_g2)
+
+var_g1 = var(gastos_g1); var_g1
+var_g2 = var(gastos_g2); var_g2
+f = var_g1 / var_g2; f
+var.test(gastos_g1, gastos_g2)
+```
+
+## Realizando o teste das variâncias para garantir que são homogêneas chegamos a um p-valor de 0.4385. Dessa forma, concluimos que as variâncias são homogêneas e os dados apresentam distribuição normal (devido ao teste de Shapiro).
+
+```{r}
+t.test(gastos_g1, gastos_g2, var.equal=T)
+```
+
+## Em suma, pelo teste de hipótese com variâncias homogêneas, obtemos p-valor de 0.3291 em um intervalo de confiança de -570.42 - 19.79 e concluimos que não há evidências o suficiente para afirmar que os gastos dos grupos são diferentes, afinal o p-valor é superior a 0.05 não rejeito H0 e também pela presença de 0 na região crítica.
+
+
+
+
+
+
