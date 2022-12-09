@@ -43,10 +43,11 @@ shapiro.test(diff(as.double(antes) - depois))
 
 ```{r}
 ## realizando teste de hipótese para valor pareados 
-t.test(depois, as.double(antes), alternative='two.side', mu=0, paired=T)
+## e querendo saber se foi eficiente, por isso 'greater'
+t.test(depois, as.double(antes), alternative='greater', mu=0, paired=T)
 ```
 
-## Nesse caso, H0 é afirmar que não o treinamento não surtiu efeito positivo no grupo. Dado um p-valor de 0.1701, chegamos aa conclusão de que  a hipótese nula não deve ser rejeitada e portanto o treinamento não foi eficiente.
+## Nesse caso, H0 é afirmar que não o treinamento não surtiu efeito positivo no grupo. Dado um p-valor de 0.08504, chegamos a conclusão de que a hipótese nula não deve ser rejeitada e portanto não podemos afirmar que o treinamento foi eficiente.
 
 # Ex 3: Um levantamento de dados foi realizado para verificar se o gasto médio com compras e um site era de 500 reais. Com base nos resultados do conjunto de dados gastos.xlsx faça o intervalo de confiança e em seguida verifique se os gastos são de 500 reais. Para resolver o exercício retire uma amostra de tamanho 20 utilizando o núumero de matrícula como semente.
 
@@ -84,10 +85,7 @@ shapiro.test(grupo2)
 
 ## Apesar dos testes de variância, pelo teste de normalidade de Shapiro obtemos p-valor inferior a 0.05 para os dados do grupo 1 e portanto não faz sentido realizar testes de hipótese para dados que não seguem uma distribuição normal.
 
-# Ex 5: Com o interesse em verificar se dois grupos são similares entre si em relação ao gasto médio com compras foi realizado um levantamento de dados. Com base nos resultados do conjunto de dados compras2.xlsx verifique se
-existe diferença entre as variâncias e em seguida verifique se existe diferença entre os grupos. Para resolver o
-exercício retire uma amostra de tamanho 15 para o grupo 1 e uma amostra de tamanho 15 para grupo 2, utilizando
-o número de matrícula como semente.
+# Ex 5: Com o interesse em verificar se dois grupos são similares entre si em relação ao gasto médio com compras foi realizado um levantamento de dados. Com base nos resultados do conjunto de dados compras2.xlsx verifique se existe diferença entre as variâncias e em seguida verifique se existe diferença entre os grupos. Para resolver o exercício retire uma amostra de tamanho 15 para o grupo 1 e uma amostra de tamanho 15 para grupo 2, utilizando o número de matrícula como semente.
 
 ```{r}
 gastos_brutos2 = read_excel("C:/Users/marco/OneDrive/Área de Trabalho/UEL/Statistics/Relatórios/DADOS/gastos2.xlsx")
@@ -106,13 +104,13 @@ f = var_g1 / var_g2; f
 var.test(gastos_g1, gastos_g2)
 ```
 
-## Realizando o teste das variâncias para garantir que são homogêneas chegamos a um p-valor de 0.4385. Dessa forma, concluimos que as variâncias são homogêneas e os dados apresentam distribuição normal (devido ao teste de Shapiro).
+## Realizando o teste das variâncias para garantir que são homogêneas chegamos a um p-valor de 0.6495. Dessa forma, concluimos que as variâncias são homogêneas e os dados apresentam distribuição normal (devido ao teste de Shapiro).
 
 ```{r}
 t.test(gastos_g1, gastos_g2, var.equal=T)
 ```
 
-## Em suma, pelo teste de hipótese com variâncias homogêneas, obtemos p-valor de 0.3291 em um intervalo de confiança de -570.42 - 19.79 e concluimos que não há evidências o suficiente para afirmar que os gastos dos grupos são diferentes, afinal o p-valor é superior a 0.05 não rejeito H0 e também pela presença de 0 na região crítica.
+## Em suma, pelo teste de hipótese com variâncias homogêneas, obtemos p-valor de 0.4231 em um intervalo de confiança de -56.01 - 24.18 e concluimos que não há evidências o suficiente para afirmar que os gastos dos grupos são diferentes. Afinal o p-valor é superior a 0.05 não rejeito H0 e também pela presença de 0 na região crítica.
 
 
 
